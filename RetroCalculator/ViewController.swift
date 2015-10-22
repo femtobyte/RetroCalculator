@@ -21,6 +21,7 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var outputLbl: UILabel!
     
+    
     var btnSound: AVAudioPlayer!
     var runningNumber = ""
     var leftValStr = ""
@@ -73,20 +74,27 @@ class ViewController: UIViewController {
     func processOperation(op: Operation){
         playSound()
         
-        if currentOperation != Operation.Empty{
+        if leftValStr != ""  && currentOperation != Operation.Empty{
             //checking if user selected 2 operators in a row with no number between
             if runningNumber != "" {
                 rightValStr = runningNumber
                 runningNumber = ""
-                
+
                 if currentOperation == Operation.Multiply{
                     result = "\(Double(leftValStr)! * Double(rightValStr)!)"
                 }else if currentOperation == Operation.Divide{
+                    //gives an error message for dividing by 0, but allows you to 
+                    //continue as if you didn't commit a math crime
+                    if(rightValStr == "0"){
+                        result = "Error"
+                        outputLbl.text = result
+                        return
+                    }
                     result = "\(Double(leftValStr)! / Double(rightValStr)!)"
                 }else if currentOperation == Operation.Subtract{
-                    result = "(\(Double(leftValStr)! - Double(rightValStr)!)"
+                    result = "\(Double(leftValStr)! - Double(rightValStr)!)"
                 }else if currentOperation == Operation.Add{
-                    result = "(\(Double(leftValStr)! + Double(rightValStr)!)"
+                    result = "\(Double(leftValStr)! + Double(rightValStr)!)"
                 }
                 
                 leftValStr = result
